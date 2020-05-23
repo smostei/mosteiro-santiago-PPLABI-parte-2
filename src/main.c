@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "menu.h"
+#include "cliente.h"
 #include "tipo.h"
 #include "color.h"
 #include "mascota.h"
@@ -10,9 +11,11 @@
 #include "fecha.h"
 #include "datahardcoded.h"
 #include "ctype.h"
+#include "informes.h"
 
 #define TAM_MASCOTA 10
 #define TAM_TRABAJO 10
+#define TAM_CLIENTE 10
 
 #define TAM 5
 #define TAM_SERVICIOS 3
@@ -63,26 +66,28 @@ int main() {
  	printf("----------Bienvenido!----------\n\n");
 
  		do {
+ 			printf("\n");
+
  			switch(menuPrincipal()) {
  				case 'a':
- 	                if(altaMascota(mascotas, TAM_MASCOTA, proxIdMascota, tipos, colores, TAM))
+ 					if(altaMascota(mascotas, TAM_MASCOTA, proxIdMascota, tipos, colores, TAM, clientesHardcoded, TAM_CLIENTE))
  	                	proxIdMascota++;
  					break;
  				case 'b':
  					if(hayMascotas(mascotas, TAM_MASCOTA))
- 						modificarMascota(mascotas, TAM_MASCOTA, tipos, colores, TAM);
+ 						modificarMascota(mascotas, TAM_MASCOTA, tipos, colores, TAM, clientesHardcoded, TAM_CLIENTE);
  					else
  						printf("No hay mascotas agregadas en el Sistema. No se puede modificar\n\n");
  					break;
  				case 'c':
  					if(hayMascotas(mascotas, TAM_MASCOTA))
- 						bajaMascota(mascotas, TAM_MASCOTA, tipos, colores, TAM);
+ 						bajaMascota(mascotas, TAM_MASCOTA, tipos, colores, TAM, clientesHardcoded, TAM_CLIENTE);
  					 else
   						printf("No hay mascotas agregadas en el Sistema. No se puede dar de baja\n\n");
  					break;
  				case 'd':
  					if(hayMascotas(mascotas, TAM_MASCOTA))
- 	 					ordenarMascotasPorTipoYNombre(mascotas, TAM_MASCOTA);
+ 	 					ordenarMascotasPorTipoYNombre(mascotas, TAM_MASCOTA, clientesHardcoded, TAM_CLIENTE);
  					else
  						printf("No hay mascotas para mostrar\n\n");
  					break;
@@ -97,7 +102,7 @@ int main() {
  					break;
  				case 'h':
  					if(hayMascotas(mascotas, TAM_MASCOTA)) {
- 						if(altaTrabajo(trabajos, TAM_TRABAJO, proxIdTrabajos, mascotas, TAM_MASCOTA, servicios, TAM_SERVICIOS))
+ 						if(altaTrabajo(trabajos, TAM_TRABAJO, proxIdTrabajos, mascotas, TAM_MASCOTA, servicios, TAM_SERVICIOS, clientesHardcoded, TAM_CLIENTE))
  							proxIdTrabajos++;
  					} else
  						printf("No se pueden dar de alta trabajos si no hay mascotas en el sistema!\n\n");
@@ -112,12 +117,43 @@ int main() {
  						printf("No se pueden mostrar trabajos si no hay mascotas en el sistema!\n\n");
  					break;
  				case 'j':
+ 					//VECTOR DE MASCOTAS REALES
+ 					//if(hayMascotas(mascotas, TAM_MASCOTA)) {
+ 					//	manejarRespuestaInformes(mascotas,
+ 					//			trabajos,
+					//			TAM_MASCOTA,
+					//			colores,
+					//			tipos,
+					//			TAM,
+					//			servicios,
+					//			TAM_SERVICIOS,
+					//			clientesHardcoded,
+					//			TAM_CLIENTE);
+ 					//} else
+ 					//	printf("No se puede acceder a la seccion de informes porque no hay mascotas en el Sistema\n\n");
+
+
+ 					//VECTOR DE MASCOTAS HARCODEADAS PARA INFORMES
+ 					    if(hayMascotas(mascotasHardcoded, TAM_MASCOTA)) {
+ 					 						manejarRespuestaInformes(mascotasHardcoded,
+ 					 								trabajosHardcoded,
+ 													TAM_MASCOTA,
+ 													colores,
+ 													tipos,
+ 													TAM,
+ 													servicios,
+ 													TAM_SERVICIOS,
+													clientesHardcoded,
+													TAM_CLIENTE);
+ 					    } else
+ 					    	printf("No se puede acceder a la seccion de informes porque no hay mascotas en el Sistema\n\n");
+ 					break;
+ 				case 'k':
  					printf("Desea salir? s/n\n");
  					fflush(stdin);
  					scanf("%c", &confirmaSalir);
  					if(confirmaSalir == 's')
  						seguir = 'n';
- 					printf("\nSaliste del programa");
  					break;
  				default:
  					printf("Opcion invalida, intenta de nuevo\n\n");
@@ -126,6 +162,8 @@ int main() {
  	        system( "read -n 1 -s -p \"Presione enter para continuar...\"" );
 
  		} while(seguir == 's');
+
+ 		printf("\nSaliste del programa\n");
 
  		return 0;
 }

@@ -1,7 +1,7 @@
 #include "fecha.h"
 #include "servicio.h"
 #include "mascota.h"
-
+#include "cliente.h"
 
 #ifndef TRABAJO_H_
 #define TRABAJO_H_
@@ -32,10 +32,20 @@ void initTrabajos(sTrabajo* trabajos, int longTrabajos);
  * @param longMascotas: longitud del vector mascotas
  * @param servicios: el vector de servicios disponibles para que el usuario pueda asignar al trabajo
  * @param longServicios: longitud del vector de servicios
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  *
  * @return 0 -> si no pudo dar de alta el trabajo. 1 -> en caso de que haya podido darlo de alta
  */
-int altaTrabajo(sTrabajo* trabajos, int longTrabajos, int proximoId, sMascota* mascotas, int longMascotas, sServicio* servicios, int longServicios);
+int altaTrabajo(sTrabajo* trabajos,
+		int longTrabajos,
+		int proximoId,
+		sMascota* mascotas,
+		int longMascotas,
+		sServicio* servicios,
+		int longServicios,
+		sCliente* clientes,
+		int longClientes);
 
 /** @brief funcion que lista los trabajos disponibles
  *
@@ -75,15 +85,6 @@ void mostrarTrabajos(sTrabajo* trabajos, int longTrabajos);
  */
 int hayTrabajos(sTrabajo* trabajos, int longTrabajos);
 
-/** @brief funcion que verifica si la fecha pasada por parametro es correcta (que tenga cierta validación entre dia, mes y año)
- *
- * @param dia: dia ingresado
- * @param mes: mes ingresado
- * @param anio: año ingresado
- *
- * @return 0 -> en caso de que sea una fecha incorrecta. 1 -> el caso contrario
- */
-int esUnaFechaCorrecta(int dia, int mes, int anio);
 
 
 

@@ -14,3 +14,10 @@ typedef struct {
  * @param longColores: longitud del vector
  */
 void listarColores(sColor* colores, int longColores);
+
+/** @brief funcion que carga la descripcion de un color
+ *
+ *  @param idColor: el id del color a cargar
+ *  @param descripcion: vector de caracteres en el que, dependiendo el idColor, se le cargará un color u otro
+ */
+void cargarDescripcionColor(int idColor, char* descripcion);

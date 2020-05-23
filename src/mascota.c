@@ -5,6 +5,7 @@
 #include "tipo.h"
 #include "color.h"
 #include "mascota.h"
+#include "cliente.h"
 
 void initMascotas(sMascota* mascotas, int longMascotas) {
     for(int i = 0; i < longMascotas; i++) {
@@ -13,68 +14,45 @@ void initMascotas(sMascota* mascotas, int longMascotas) {
 }
 
 
-void mostrarMascota(sMascota mascota) {
+void mostrarMascota(sMascota mascota, sCliente* clientes, int longClientes) {
 
 	char mascotaTipo[20];
 	char mascotaColor[20];
+	int indiceDuenio = buscarClientePorId(clientes, longClientes, mascota.idCliente);
 
-	switch(mascota.idTipo) {
-	case 1000:
-		strcpy(mascotaTipo, "Ave");
-		break;
-	case 1001:
-		strcpy(mascotaTipo, "Perro");
-		break;
-	case 1002:
-		strcpy(mascotaTipo, "Gato");
-		break;
-	case 1003:
-		strcpy(mascotaTipo, "Roedor");
-		break;
-	default:
-		strcpy(mascotaTipo, "Pez");
-	}
+	cargarDescripcionTipo(mascota.idTipo, mascotaTipo);
+	cargarDescripcionColor(mascota.idColor, mascotaColor);
 
-	switch(mascota.idColor) {
-	case 5000:
-		strcpy(mascotaColor, "Negro");
-		break;
-	case 5001:
-		strcpy(mascotaColor, "Blanco");
-		break;
-	case 5002:
-		strcpy(mascotaColor, "Gris");
-		break;
-	case 5003:
-		strcpy(mascotaColor, "Rojo");
-		break;
-	default:
-		strcpy(mascotaColor, "Azul");
-	}
-
-	printf("%d     %10s     %10s      %10s     %d\n", mascota.id, mascota.nombre, mascotaTipo, mascotaColor, mascota.edad);
+	printf("%d     %10s     %10s      %10s     %d       %s\n",
+			mascota.id,
+			mascota.nombre,
+			mascotaTipo,
+			mascotaColor,
+			mascota.edad,
+			clientes[indiceDuenio].nombre);
 }
 
 
-void mostrarMascotas(sMascota* mascotas, int longMascotas) {
+void mostrarMascotas(sMascota* mascotas, int longMascotas, sCliente* clientes, int longClientes) {
     printf("\n------Lista de mascotas--------\n\n");
 
-	printf("ID        Nombre          Tipo            Color    Edad\n\n");
+	printf("ID        Nombre          Tipo            Color    Edad       Nombre del duenio\n\n");
 
     int flag = 0;
 
     for(int i = 0; i < longMascotas; i++) {
     	if(!mascotas[i].isEmpty) {
-    		mostrarMascota(mascotas[i]);
+    		mostrarMascota(mascotas[i], clientes, longClientes);
             flag = 1;
         }
     }
 
-    if(!flag) printf("\nNo hay mascotas para mostrar\n");
+    if(!flag)
+    	printf("\nNo hay mascotas para mostrar\n");
 }
 
 
-int altaMascota(sMascota* mascotas, int longMascotas, int proximoId, sTipo* tipos, sColor* colores, int longitud) {
+int altaMascota(sMascota* mascotas, int longMascotas, int proximoId, sTipo* tipos, sColor* colores, int longitud, sCliente* clientes, int longClientes) {
 		int retorno = 0;
 
 	 	sMascota mascota;
@@ -113,6 +91,19 @@ int altaMascota(sMascota* mascotas, int longMascotas, int proximoId, sTipo* tipo
                     scanf("%d", &mascota.edad);
                 }
 
+	            printf("Ingrese el ID del duenio de la mascota: \n");
+	            mostrarClientes(clientes, longClientes);
+	            scanf("%d", &mascota.idCliente);
+
+	        	int indiceDuenio = buscarClientePorId(clientes, longClientes, mascota.idCliente);
+
+	        	while(indiceDuenio == -1) {
+		            printf("No existe un duenio con ese ID\nIngreselo nuevamente: \n");
+		            scanf("%d", &mascota.idCliente);
+
+		            indiceDuenio = buscarClientePorId(clientes, longClientes, mascota.idCliente);
+	        	}
+
 	            mascota.isEmpty = 0;
 
 	            mascotas[lugarLibre] = mascota;
@@ -127,19 +118,19 @@ int altaMascota(sMascota* mascotas, int longMascotas, int proximoId, sTipo* tipo
 }
 
 
-void modificarMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud) {
+void modificarMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud, sCliente* clientes, int longClientes) {
     int indice;
     int id;
     char respuesta;
 
     printf("Ingrese el id de la mascota a modificar: \n");
-    mostrarMascotas(mascotas, longMascotas);
+    mostrarMascotas(mascotas, longMascotas, clientes, longClientes);
     scanf("%d", &id);
 
     indice = buscarMascota(mascotas, id, longMascotas);
 
     if(indice != -1) {
-        mostrarMascota(mascotas[indice]);
+        mostrarMascota(mascotas[indice], clientes, longClientes);
 
         printf("Queres modificar a esta mascota? s/n\n");
         fflush(stdin);
@@ -191,19 +182,19 @@ void manejarModificacionMascota(sMascota* mascota, sTipo* tipos, int longTipos) 
     printf("Mascota modificada con exito!\n");
 }
 
-void bajaMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud) {
+void bajaMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud, sCliente* clientes, int longClientes) {
     int indice;
     int id;
     char respuesta;
 
     printf("Ingrese el ID de la mascota: \n");
-    mostrarMascotas(mascotas, longMascotas);
+    mostrarMascotas(mascotas, longMascotas, clientes, longClientes);
     scanf("%d", &id);
 
     indice = buscarMascota(mascotas, id, longMascotas);
 
     if(indice != -1) {
-        mostrarMascota(mascotas[indice]);
+        mostrarMascota(mascotas[indice], clientes, longClientes);
 
         printf("Estas seguro/a que queres dar de baja a la mascota? s/n\n");
         fflush(stdin);
@@ -256,7 +247,7 @@ int hayMascotas(sMascota* mascotas, int longMascotas) {
     return retorno;
 }
 
-void ordenarMascotasPorTipoYNombre(sMascota* mascotas, int longMascotas) {
+void ordenarMascotasPorTipoYNombre(sMascota* mascotas, int longMascotas, sCliente* clientes, int longClientes) {
     sMascota auxMascota;
 
     for(int i = 0; i < longMascotas - 1; i++) {
@@ -277,6 +268,6 @@ void ordenarMascotasPorTipoYNombre(sMascota* mascotas, int longMascotas) {
 
 
 
-    mostrarMascotas(mascotas, longMascotas);
+    mostrarMascotas(mascotas, longMascotas, clientes, longClientes);
 }
 

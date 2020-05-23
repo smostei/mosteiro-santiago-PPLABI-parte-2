@@ -15,3 +15,11 @@ typedef struct {
  * @param longitudTipos: la longitud del vector de tipos
  */
 void listarTipos(sTipo* tipos, int longitudTipos);
+
+/** @brief funcion que carga la descripción de un tipo de mascota para poder mejorar la experiencia al leerlo
+ *
+ * @param idTipo: el ID por el cual se mapeara el tipo a cargar
+ * @param descripcion: el vector de caracteres al cuál se cargara la información del tipo de mascota
+ */
+void cargarDescripcionTipo(int idTipo, char* descripcion);
+

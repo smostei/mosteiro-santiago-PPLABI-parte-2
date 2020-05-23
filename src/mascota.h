@@ -1,5 +1,6 @@
 #include "tipo.h"
 #include "color.h"
+#include "cliente.h"
 
 #ifndef MASCOTA_H_
 #define MASCOTA_H_
@@ -7,6 +8,7 @@
 typedef struct {
     int id; //Comienza en 0, es autoincremental
     char nombre[20];
+    int idCliente;
     int idTipo;
     int idColor;
     int edad;
@@ -25,15 +27,19 @@ void initMascotas(sMascota* mascotas, int longMascotas);
 /** @brief funcion que muestra una mascota
  *
  * @param mascota: mascota que será mostrada
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  */
-void mostrarMascota(sMascota mascota);
+void mostrarMascota(sMascota mascota, sCliente* clientes, int longClientes);
 
 /** @brief funcion que muestra todas las mascotas de la lista
  *
  * @param mascotas: vector de mascotas a mostrar
  * @param longMascotas: longitud del vector
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  */
-void mostrarMascotas(sMascota* mascotas, int longMascotas);
+void mostrarMascotas(sMascota* mascotas, int longMascotas, sCliente* clientes, int longClientes);
 
 /** @brief funcion que da de alta una mascota
  *
@@ -43,10 +49,19 @@ void mostrarMascotas(sMascota* mascotas, int longMascotas);
  * @param tipos: vector de tipos (a la mascota se le asigna un elemento de estos)
  * @param colores: vector de colores (a la mascota se le asigna un elemento de estos)
  * @param longitud: la longitud del vector de tipos y colores
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  *
  * @return 0 -> si no pudo dar de alta la mascota. 1 -> si pudo darla de alta
  */
-int altaMascota(sMascota* mascotas, int longMascotas, int proximoId, sTipo* tipos, sColor* colores, int longitud);
+int altaMascota(sMascota* mascotas,
+		int longMascotas,
+		int proximoId,
+		sTipo* tipos,
+		sColor* colores,
+		int longitud,
+		sCliente* clientes,
+		int longClientes);
 
 /** @brief funcion que modifica una mascota seleccionada del vector
  *
@@ -55,8 +70,10 @@ int altaMascota(sMascota* mascotas, int longMascotas, int proximoId, sTipo* tipo
  * @param tipos: vector de tipos
  * @param colores: vector de colores
  * @param longitud: la longitud del vector de tipos y colores
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  */
-void modificarMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud);
+void modificarMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud, sCliente* clientes, int longClientes);
 
 /** @brief funcion da de baja una mascota seleccionada del vector
  *
@@ -65,8 +82,10 @@ void modificarMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor
  * @param tipos: vector de tipos
  * @param colores: vector de colores
  * @param longitud: la longitud del vector de tipos y colores
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  */
-void bajaMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud);
+void bajaMascota(sMascota* mascotas, int longMascotas, sTipo* tipos, sColor* colores, int longitud, sCliente* clientes, int longClientes);
 
 /** @brief funcion que busca el primer espacio libre que haya en el vector de mascotas
  *
@@ -109,5 +128,7 @@ int hayMascotas(sMascota* mascotas, int longMascotas);
  *
  * @param mascotas: vector de mascotas a ordenar
  * @param longMascotas: longitud del vector de mascotas
+ * @param clientes: el vector de clientes para identificar el duenio de la mascota
+ * @param longClientes: longitud del vector clientes
  */
-void ordenarMascotasPorTipoYNombre(sMascota* mascotas, int longMascotas);
+void ordenarMascotasPorTipoYNombre(sMascota* mascotas, int longMascotas, sCliente* clientes, int longClientes);

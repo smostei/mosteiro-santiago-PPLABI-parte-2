@@ -15,3 +15,9 @@ char menuPrincipal();
  * @return la opcion elegida por el usuario
  */
 int menuModificacionMascota();
+
+/** @brief funcion que imprime por consola el menu de informes con las opciones a elegir por el usuario
+ *
+ * @return la opcion elegida por el usuario
+ */
+int menuInformes();
